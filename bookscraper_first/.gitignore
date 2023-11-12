@@ -1,0 +1,23 @@
+# Scrapy
+__pycache__/
+.scrapy/
+
+# Logs
+*.log
+
+# Virtual Environment
+venv/
+env/
+*.pyc
+
+# Scraped data
+*.csv
+*.json
+*.jl
+
+# Egg-info
+*.egg-info/
+
+# Ignore scrapy stats
+scrapy.stats
+
