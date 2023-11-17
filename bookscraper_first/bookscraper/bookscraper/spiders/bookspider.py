@@ -6,6 +6,7 @@ class BookspiderSpider(scrapy.Spider):
     allowed_domains = ['books.toscrape.com']
     start_urls = ['http://books.toscrape.com/']
 
+
     def parse(self, response):
         books = response.css('article.product_pod')
         #Going into each individual book and getting title, description and rating
@@ -33,7 +34,7 @@ class BookspiderSpider(scrapy.Spider):
         book_item = BookItem()
 
 
-        book_item['url'] = response.url
+        book_item['url'] = response.url,
         book_item["title"] = response.css(".product_main h1::text").get()
         book_item["product_type"] = table_rows[1].css("td ::text").get()
         book_item["upc"] = table_rows[0].css("td ::text").get()

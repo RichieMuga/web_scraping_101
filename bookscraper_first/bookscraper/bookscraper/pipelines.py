@@ -67,3 +67,91 @@ class BookscraperPipeline:
             0
 
         return item
+
+import mysql.connector
+
+class SaveToMsqlPipeline:
+
+    def __init__(self):
+        self.conn = mysql.connector.connect(
+            host = "localhost",
+            user = "root",
+            password = "",
+            database = "books"
+        )
+
+        # Create cur used to execute commands
+        self.cur = self.conn.cursor()
+
+        self.cur.execute(
+        """
+        CREATE TABLE IF NOT EXISTS books(
+        Id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+        url VARCHAR(255),
+        title VARCHAR(255),
+        product_type VARCHAR(255),
+        upc VARCHAR(255),
+        price_excl_tax DECIMAL,
+        price_incl_tax DECIMAL,
+        tax DECIMAL,
+        availability INT,
+        number_of_reviews INT,
+        stars INT,
+        category VARCHAR(255),
+        description TEXT,
+        price DECIMAL
+        )
+        """
+        )
+
+    def insert_into(self,item,spider):
+        print(f"Connecting to database: {self.conn}")
+        # Insert into statement
+        self.cur.execute(
+        """
+            INSERT INTO books (
+            url,
+            title,
+            product_type,
+            upc,
+            price_excl_tax,
+            price_incl_tax,
+            tax,
+            availability,
+            number_of_reviews,
+            stars,
+            category,
+            description,
+            price
+            )
+        VALUES(
+            %s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s
+        )""",
+        (
+            item['url'],
+            item["title"],
+            item["product_type"],
+            item["upc"],
+            item["price_excl_tax"],
+            item["price_incl_tax"],
+            item["tax"],
+            item["availability"],
+            item["number_of_reviews"],
+            item["stars"],
+            item["category"],
+            item["description"],
+            item["price"]
+        )
+        )
+
+    # Execute insert into command
+        self.conn.commit()
+
+        return item
+
+    def close_spider(self,spider):
+
+    # Close spider and connection cur
+        self.cur.close()
+        self.conn.close()
+
