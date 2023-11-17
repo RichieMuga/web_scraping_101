@@ -1,5 +1,10 @@
 # Scrapy
 __pycache__/
+
+# Ignore Python bytecode files for spiders
+bookscraper/bookscraper/spiders/__pycache__
+
+
 .scrapy/
 
 # Logs
@@ -20,4 +25,5 @@ env/
 
 # Ignore scrapy stats
 scrapy.stats
+.gitignore
 
