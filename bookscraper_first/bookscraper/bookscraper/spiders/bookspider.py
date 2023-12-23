@@ -49,3 +49,6 @@ class BookspiderSpider(scrapy.Spider):
 
 
         yield book_item
+
+import mysql.connector
+
